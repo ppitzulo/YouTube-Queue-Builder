@@ -1,0 +1,18 @@
+body { 
+  background-color: #2b2b2b;
+  color: white;
+}
+
+#createQueue {
+  border-radius: 5px;
+  background-color: #b2071D;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;  
+}
+
+#createQueue:hover {
+  background-color: #d91f2d;
+}
