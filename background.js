@@ -5,34 +5,52 @@ function extractVideoId(url) {
 }
 
 // Listen for messages from the popup
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log(message)
   if (message.action === "createQueue") {
     createQueueFromYouTubeTabs();
+  } else if (message.action === "createQueueWindow") {
+    createQueueFromYouTubeTabsWindow();
   }
 });
 
-function createQueueFromYouTubeTabs() {
-  // Query all tabs that have YouTube video URLs
-  chrome.windows.getCurrent((currentWindow) => {
-    chrome.tabs.query({ url: "*://www.youtube.com/watch*", windowId: currentWindow.id }, (tabs) => {
-      if (tabs.length === 0) {
-        alert("No YouTube video tabs found.");
-        return;
-      }
-
-      // Collect video IDs from all YouTube video tabs
-      const videoIds = tabs.map((tab) => extractVideoId(tab.url)).filter(Boolean);
-
-      if (videoIds.length === 0) {
-        alert("No valid YouTube videos found in the tabs.");
-        return;
-      }
-
-      // Construct the queue URL by adding video IDs as parameters
-      let queueUrl = "https://www.youtube.com/watch_videos?video_ids=" + videoIds.join(",");
-
-      // Open the new YouTube tab with the queue
-      chrome.tabs.create({ url: queueUrl });
-    });
-  })
+function createQueueFromYouTubeTabsWindow() {
+  console.log("test")
+  // Create a playlist from only the youtube tabs in the current window
+  browser.windows.getCurrent().then((currentWindow) => {
+    createQueueFromYouTubeTabs(currentWindow.id);
+  }).catch((error) => {
+    console.error("Error getting current window:", error);
+  });
 }
+
+function createQueueFromYouTubeTabs(windowID) {
+  // Query all tabs that have YouTube video URLs
+  browser.tabs.query({
+    url: "*://www.youtube.com/watch*",
+    windowId: windowID,
+  }).then((tabs) => {
+    if (tabs.length === 0) {
+      alert("No YouTube video tabs found.");
+      return;
+    }
+
+    // Collect video IDs from all YouTube video tabs
+    const videoIds = tabs.map((tab) => extractVideoId(tab.url)).filter(Boolean);
+
+    if (videoIds.length === 0) {
+      alert("No valid YouTube videos found in the tabs.");
+      return;
+    }
+
+    // Construct the queue URL by adding video IDs as parameters
+    let queueUrl = "https://www.youtube.com/watch_videos?video_ids=" +
+      videoIds.join(",");
+
+    // Open the new YouTube tab with the queue
+    browser.tabs.create({ url: queueUrl });
+  }).catch((error) => {
+    console.error("Error querying YouTube tabs:", error);
+  });
+}
+

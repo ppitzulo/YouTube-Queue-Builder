@@ -2,13 +2,13 @@
   "manifest_version": 3,
   "name": "YouTube Queue Builder",
   "version": "1.0",
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "activeTab"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "hello_extensions.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "icons": {
     "16": "hello_extensions.png"

@@ -3,7 +3,7 @@ body {
   color: white;
 }
 
-#createQueue {
+.button {
   border-radius: 5px;
   background-color: #b2071D;
   color: white;
@@ -13,6 +13,6 @@ body {
   font-size: 1.2rem;  
 }
 
-#createQueue:hover {
+.button:hover {
   background-color: #d91f2d;
 }
