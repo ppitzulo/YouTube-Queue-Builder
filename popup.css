@@ -1,18 +1,31 @@
 body { 
   background-color: #2b2b2b;
   color: white;
+  width: max-content;
+  text-align: center;
 }
 
-.button {
+.divider {
+  border-bottom: 2px solid white;
+  margin-bottom: 1.5rem;
+}
+
+button {
   border-radius: 5px;
   background-color: #b2071D;
   color: white;
   cursor: pointer;
   border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;  
+  padding: 0.5rem;
+  font-size: 1.2rem;
 }
 
-.button:hover {
+button:hover {
   background-color: #d91f2d;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
