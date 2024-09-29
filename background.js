@@ -1,4 +1,7 @@
-importScripts("browser-polyfill.js");
+if (typeof chrome !== 'undefined' && !chrome.runtime.getBrowserInfo) {
+  importScripts('browser-polyfill.js'); // If we are running under chrome import the polyfill here otherwise the manifest will handle it
+}
+
 // Helper function to extract video ID from a YouTube URL
 function extractVideoId(url) {
   const urlParams = new URL(url).searchParams;
