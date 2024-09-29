@@ -1,3 +1,4 @@
+importScripts("browser-polyfill.js");
 // Helper function to extract video ID from a YouTube URL
 function extractVideoId(url) {
   const urlParams = new URL(url).searchParams;
@@ -15,9 +16,8 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 function createQueueFromYouTubeTabsWindow() {
-  console.log("test")
   // Create a playlist from only the youtube tabs in the current window
-  browser.windows.getCurrent().then((currentWindow) => {
+  browser.windows.getLastFocused().then((currentWindow) => {
     createQueueFromYouTubeTabs(currentWindow.id);
   }).catch((error) => {
     console.error("Error getting current window:", error);
@@ -25,13 +25,14 @@ function createQueueFromYouTubeTabsWindow() {
 }
 
 function createQueueFromYouTubeTabs(windowID) {
+  console.log(windowID)
   // Query all tabs that have YouTube video URLs
   browser.tabs.query({
     url: "*://www.youtube.com/watch*",
     windowId: windowID,
   }).then((tabs) => {
     if (tabs.length === 0) {
-      alert("No YouTube video tabs found.");
+      console.error("No YouTube video tabs found.");
       return;
     }
 
